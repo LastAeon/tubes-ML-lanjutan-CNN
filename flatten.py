@@ -7,6 +7,3 @@ def flatten(set_of_matrix):
         resuting_array += temp_matrix
     
     return resuting_array
-
-set_of_matrix = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]
-print(flatten(set_of_matrix))
