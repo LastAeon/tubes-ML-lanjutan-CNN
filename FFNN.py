@@ -127,6 +127,14 @@ class FFNN:
         print("error: ", cumulative_error)
         self.cumulative_error = cumulative_error
 
+    def add_buffer_layer(self, input_size, layer_size, layer_type="RELU"):
+        buffer_layer = Layer(activation[layer_type])
+        for j in range(layer_size):
+            buffer_weight = [1 for _ in range(input_size)]
+            neuron = Neuron(buffer_weight)
+            buffer_layer.addNeuron(neuron)
+        self.addLayer(buffer_layer)
+
 
 
 

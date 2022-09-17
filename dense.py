@@ -1,7 +1,7 @@
 from FFNN import FFNN
 from flatten import flatten
 
-class dense:
+class Dense:
     def __init__(self, filename):
         self.ffnn = FFNN(filename)
     

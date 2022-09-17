@@ -1,5 +1,5 @@
 from FFNN import FFNN
-from flatten import flatten
+from util import flatten
 from dense import dense
 
 

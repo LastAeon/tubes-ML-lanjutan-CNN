@@ -1,0 +1,9 @@
+3
+Convolution
+[] 1 1 3 2
+Detector
+[]
+Pooling
+[] 2 2 1 max
+Dense
+Dense_Architecture.txt

@@ -111,6 +111,6 @@ def print_matrix(header,matrixes):
         print("----------------")
 
 #Call test function
-test()
+#test()
 
 

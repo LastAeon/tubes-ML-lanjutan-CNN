@@ -39,6 +39,17 @@ def pooling_layer(raw_matrix_list, kernel_y, kernel_x, stride: int, mode: str= '
         output_list.append(pooling(matrix, kernel_y, kernel_x, stride, mode))
     return output_list
 
+class PoolingStep:
+    def __init__(self, raw_matrix_list, kernel_y, kernel_x, stride: int, mode: str= 'max'):
+        self.raw_matrix_list = raw_matrix_list
+        self.kernel_y = kernel_y
+        self.kernel_x = kernel_x
+        self.stride = stride
+        self.mode = mode
+
+    def pooling(self):
+        pooling_layer(self.raw_matrix_list, self.kernel_y, self.kernel_x, self.stride, self.mode)
+
 # def trial():
 #     matrix = [
 #         [1,2,3,4],
