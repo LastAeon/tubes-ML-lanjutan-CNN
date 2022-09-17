@@ -25,9 +25,9 @@ def pooling(raw_matrix, kernel_y, kernel_x, stride: int, mode: str= 'max' ):
                 output_elm = sum(raw_elm_list) / len(raw_elm_list)
             
             output_y.append(output_elm)
-            first_y += kernel_y
+            first_y += stride
         output.append(output_y)
-        first_x += kernel_x
+        first_x += stride
     return transpose(output)
 
 def transpose(matrix):
