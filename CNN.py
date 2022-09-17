@@ -67,7 +67,7 @@ class CNN:
             if(isinstance(self.layer_list[i],ConvolutionStep)):
                 self.layer_list[i].input_matrixes = output
                 self.layer_list[i].convolution()
-                output = self.layer_list[i].output[0]
+                output = self.layer_list[i].output
             elif(isinstance(self.layer_list[i],DetectorStep)):
                 self.layer_list[i].raw_matrix_list = output
                 output = self.layer_list[i].detector()
@@ -83,4 +83,4 @@ class CNN:
 image_src = "test\cats\cat.0.jpg"
 cnn_test = CNN("CNN_architecture.txt", 10, 15)
 cnn_test.forwardPropagation(image_src)
-        
+#print(cnn_test.forwardPropagation(image_src))

@@ -5,7 +5,7 @@ class ConvolutionStep:
     def __init__(self,input_matrixes, input_pad, banyak_filter, filter_size, input_stride):
         self.banyak_input = len(input_matrixes)
         #NOTE: input untuk h dan w 
-        self.input_pad = (input_pad)
+        self.input_pad = input_pad
         self.banyak_filter = banyak_filter
         self.filter_size = filter_size
         self.input_stride = input_stride
@@ -13,11 +13,15 @@ class ConvolutionStep:
         #Input matrixes
         self.input_matrixes = input_matrixes
         input_matrixes = []
+        bias_array = []
         for matrix in self.input_matrixes:
             #Padding
             #input_matrixes.append(np.pad(random_matrix,input_pad, mode='empty').tolist())
             input_matrixes.append(np.pad(matrix,input_pad,'constant', constant_values=(0)))
+            #Bias 
+            bias_array.append(np.random.randint(1,2))
         self.input_matrixes = input_matrixes
+        self.bias_array = bias_array
 
         #Filter kernel matrixes
         kernel_matrixes = []
@@ -32,11 +36,12 @@ class ConvolutionStep:
         for matriks in self.input_matrixes:
             v_h= floor((len(matriks[0])-self.filter_size)/self.input_stride + 1)
             v_w = floor((len(matriks)-self.filter_size)/self.input_stride + 1)
-            h = len(matriks[0])-self.filter_size
-            w = len(matriks)-self.filter_size
+            h = len(matriks[0])
+            w = len(matriks)
 
             output_matrixes = []
-            for kernel_matriks in self.kernel_matrixes:
+            for kernel_idx in range(self.banyak_filter):
+                kernel_matriks = self.kernel_matrixes[kernel_idx]
                 v_w_counter = 0
                 i = 0
                 output_matrix=[]
@@ -61,7 +66,19 @@ class ConvolutionStep:
                     i+=self.input_stride
                     v_w_counter+=1
                 output_matrixes.append(output_matrix)
-            output.append(output_matrixes)
+            output_final_matrix = [[0 for i_create in range(v_h)] for j_create in range(v_w)]
+            #debug
+            #print(self.bias_array)
+            #print(output_matrixes)
+            for _idx in range(len(output_matrixes)):
+                _matrix = output_matrixes[_idx]
+                for _i in range(len(_matrix)):  
+                    for _j in range(len(_matrix[0])):
+                        output_final_matrix[_i][_j] += _matrix[_i][_j] 
+                        if(_idx == len(output_matrixes)-1):
+                            output_final_matrix[_i][_j] += self.bias_array[kernel_idx]
+            output.append(output_final_matrix)
+             
         self.output = output
 
 def test():
@@ -99,8 +116,7 @@ def test():
     #Convolution output
     convolutionStepTest.convolution()
     output = convolutionStepTest.output
-    for o_matrixes in output:
-        print_matrix("Output matriks", o_matrixes)
+    print_matrix("Output matriks", output)
 
 #Debug matrix
 def print_matrix(header,matrixes):
