@@ -5,7 +5,7 @@ class ConvolutionStep:
     def __init__(self,input_matrixes, input_pad, banyak_filter, filter_size, input_stride):
         self.banyak_input = len(input_matrixes)
         #NOTE: input untuk h dan w 
-        self.input_pad = input_pad
+        self.input_pad = (input_pad)
         self.banyak_filter = banyak_filter
         self.filter_size = filter_size
         self.input_stride = input_stride

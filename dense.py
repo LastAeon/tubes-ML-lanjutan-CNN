@@ -1,5 +1,5 @@
 from FFNN import FFNN
-from flatten import flatten
+from util import flatten
 
 class Dense:
     def __init__(self, filename):

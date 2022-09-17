@@ -27,6 +27,6 @@ def image_to_matrix(src_path, x_size, y_size):
     return [rgb_r, rgb_g, rgb_b]
 
 # # testing
-# src_path = 'profic google.png'
+# src_path = "test\cats\cat.0.jpg"
 # result = image_to_matrix(src_path, 4, 5)
 # print(len(result[0]), len(result[0][0]), result[0][0][0])

@@ -48,7 +48,7 @@ class PoolingStep:
         self.mode = mode
 
     def pooling(self):
-        pooling_layer(self.raw_matrix_list, self.kernel_y, self.kernel_x, self.stride, self.mode)
+        return pooling_layer(self.raw_matrix_list, self.kernel_y, self.kernel_x, self.stride, self.mode)
 
 # def trial():
 #     matrix = [
