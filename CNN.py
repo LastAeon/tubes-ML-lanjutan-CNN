@@ -77,6 +77,8 @@ class CNN:
         self.hasil_predict = hasil_predict
         return hasil_predict
 
-# testing
-
+# # testing
+# image_src = 
+# cnn_test = CNN("CNN_architecture.txt", 100, 150)
+# cnn_test.forwardPropagation(img_src)
         
