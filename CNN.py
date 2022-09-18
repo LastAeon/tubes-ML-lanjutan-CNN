@@ -70,7 +70,7 @@ class CNN:
         #Convolutional layer
         output = matrix_input
         for i in range(len(self.layer_list)):
-            self.layer_list[i].hitungOutput(output)
+            output = self.layer_list[i].hitungOutput(output)
             
         #Dense layer
         hasil_predict = self.dense.predict_set_of_matrix(output)

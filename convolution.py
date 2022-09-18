@@ -25,13 +25,13 @@ class ConvolutionStep:
     def hitungOutput(self, input_matrixes):
         # Padding Input matrixes
         self.input_matrixes = input_matrixes
-        input_matrixes = []
+        input_matrixes_after_padding = []
         
         for matrix in self.input_matrixes:
             #Padding
             #input_matrixes.append(np.pad(random_matrix,input_pad, mode='empty').tolist())
-            input_matrixes.append(np.pad(matrix, self.input_pad, 'constant', constant_values=(0)))
-        self.input_matrixes = input_matrixes
+            input_matrixes_after_padding.append(np.pad(matrix, self.input_pad, 'constant', constant_values=(0)))
+        self.input_matrixes = input_matrixes_after_padding
 
         output=[]
         for matriks in self.input_matrixes:
@@ -81,6 +81,7 @@ class ConvolutionStep:
             output.append(output_final_matrix)
              
         self.output = output
+        return output
 
 # def test():
 #     #Ukuran input 
