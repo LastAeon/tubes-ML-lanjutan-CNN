@@ -53,13 +53,13 @@ class CNN:
                     dense_architecture = layer_param[0]
                     self.dense = Dense(dense_architecture)
                 elif(layer_type == "Convolution"):
-                    layer = ConvolutionStep(layer_param[0], int(layer_param[1]), int(layer_param[2]), int(layer_param[3]), int(layer_param[4]))
+                    layer = ConvolutionStep(int(layer_param[1]), int(layer_param[2]), int(layer_param[3]), int(layer_param[4]))
                     self.layer_list.append(layer)
                 elif(layer_type == "Detector"):
-                    layer = DetectorStep(layer_param[0])
+                    layer = DetectorStep()
                     self.layer_list.append(layer)
                 elif(layer_type == "Pooling"):
-                    layer = PoolingStep(layer_param[0], int(layer_param[1]), int(layer_param[2]), int(layer_param[3]))
+                    layer = PoolingStep(int(layer_param[1]), int(layer_param[2]), int(layer_param[3]))
                     self.layer_list.append(layer)
         return
 
@@ -70,16 +70,8 @@ class CNN:
         #Convolutional layer
         output = matrix_input
         for i in range(len(self.layer_list)):
-            if(isinstance(self.layer_list[i],ConvolutionStep)):
-                self.layer_list[i].input_matrixes = output
-                self.layer_list[i].convolution()
-                output = self.layer_list[i].output
-            elif(isinstance(self.layer_list[i],DetectorStep)):
-                self.layer_list[i].raw_matrix_list = output
-                output = self.layer_list[i].detector()
-            elif(isinstance(self.layer_list[i],PoolingStep)):
-                self.layer_list[i].raw_matrix_list = output
-                output = self.layer_list[i].pooling()
+            self.layer_list[i].hitungOutput(output)
+            
         #Dense layer
         hasil_predict = self.dense.predict_set_of_matrix(output)
         self.hasil_predict = hasil_predict

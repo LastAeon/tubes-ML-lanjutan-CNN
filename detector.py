@@ -12,10 +12,10 @@ def detector(matrix): # Pokoknya, matrix tipenya array of array of float
     return new_matrix
 
 class DetectorStep:
-    def __init__(self, raw_matrix_list):
-        self.raw_matrix_list = raw_matrix_list
-    def detector(self):
+    def __init__(self):
+        return
+    def hitungOutput(self, input_matrixes):
         output_list = []
-        for matrix in self.raw_matrix_list:
+        for matrix in input_matrixes:
             output_list.append(detector(matrix))
         return output_list
