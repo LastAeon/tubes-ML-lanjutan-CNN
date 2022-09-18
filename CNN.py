@@ -30,15 +30,21 @@ class CNN:
     layer_list = []
     input_x = 0
     input_y = 0
-    def __init__(self, filename, input_x, input_y):
+    def __init__(self, filename):
         # recreate object
         self.layer_list = []
-        self.input_x = input_x
-        self.input_y = input_y
+        
         #baca dari file
         with open(filename) as reader:
             filecontent = reader.read()
             lines = filecontent.split("\n")
+
+            # read input matriks size(for resize)
+            input_size = list(map(int, lines.pop(0).split(" ")))
+            self.input_x = input_size[0]
+            self.input_y = input_size[1]
+
+            # read the rest
             for i in range(int(lines.pop(0))):
                 layer_info = lines.pop(0).split(" ")
                 layer_param = lines.pop(0).split(" ")
@@ -78,9 +84,3 @@ class CNN:
         hasil_predict = self.dense.predict_set_of_matrix(output)
         self.hasil_predict = hasil_predict
         return hasil_predict
-
-# # testing
-image_src = "test\cats\cat.0.jpg"
-cnn_test = CNN("CNN_architecture.txt", 10, 15)
-cnn_test.forwardPropagation(image_src)
-#print(cnn_test.forwardPropagation(image_src))
