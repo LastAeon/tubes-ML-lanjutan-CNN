@@ -30,15 +30,21 @@ class CNN:
     layer_list = []
     input_x = 0
     input_y = 0
-    def __init__(self, filename, input_x, input_y):
+    def __init__(self, filename):
         # recreate object
         self.layer_list = []
-        self.input_x = input_x
-        self.input_y = input_y
+        
         #baca dari file
         with open(filename) as reader:
             filecontent = reader.read()
             lines = filecontent.split("\n")
+
+            # read input matriks size(for resize)
+            input_size = list(map(int, lines.pop(0).split(" ")))
+            self.input_x = input_size[0]
+            self.input_y = input_size[1]
+
+            # read the rest
             for i in range(int(lines.pop(0))):
                 layer_info = lines.pop(0).split(" ")
                 layer_param = lines.pop(0).split(" ")
@@ -47,13 +53,13 @@ class CNN:
                     dense_architecture = layer_param[0]
                     self.dense = Dense(dense_architecture)
                 elif(layer_type == "Convolution"):
-                    layer = ConvolutionStep(layer_param[0], int(layer_param[1]), int(layer_param[2]), int(layer_param[3]), int(layer_param[4]))
+                    layer = ConvolutionStep(int(layer_param[1]), int(layer_param[2]), int(layer_param[3]), int(layer_param[4]))
                     self.layer_list.append(layer)
                 elif(layer_type == "Detector"):
-                    layer = DetectorStep(layer_param[0])
+                    layer = DetectorStep()
                     self.layer_list.append(layer)
                 elif(layer_type == "Pooling"):
-                    layer = PoolingStep(layer_param[0], int(layer_param[1]), int(layer_param[2]), int(layer_param[3]))
+                    layer = PoolingStep(int(layer_param[1]), int(layer_param[2]), int(layer_param[3]))
                     self.layer_list.append(layer)
         return
 
@@ -64,23 +70,9 @@ class CNN:
         #Convolutional layer
         output = matrix_input
         for i in range(len(self.layer_list)):
-            if(isinstance(self.layer_list[i],ConvolutionStep)):
-                self.layer_list[i].input_matrixes = output
-                self.layer_list[i].convolution()
-                output = self.layer_list[i].output
-            elif(isinstance(self.layer_list[i],DetectorStep)):
-                self.layer_list[i].raw_matrix_list = output
-                output = self.layer_list[i].detector()
-            elif(isinstance(self.layer_list[i],PoolingStep)):
-                self.layer_list[i].raw_matrix_list = output
-                output = self.layer_list[i].pooling()
+            output = self.layer_list[i].hitungOutput(output)
+            
         #Dense layer
         hasil_predict = self.dense.predict_set_of_matrix(output)
         self.hasil_predict = hasil_predict
         return hasil_predict
-
-# # testing
-image_src = "test\cats\cat.0.jpg"
-cnn_test = CNN("CNN_architecture.txt", 10, 15)
-cnn_test.forwardPropagation(image_src)
-#print(cnn_test.forwardPropagation(image_src))

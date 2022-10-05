@@ -6,7 +6,7 @@ def flatten(set_of_matrix):
     for matrix in set_of_matrix:
         temp_matrix = np.matrix(matrix).flatten().tolist()[0]
         resuting_array += temp_matrix
-    
+    # print(resuting_array, len(resuting_array))
     return resuting_array
 
 
