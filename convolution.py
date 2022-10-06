@@ -1,30 +1,31 @@
 from math import floor
 import numpy as np
+from scipy import signal
 
 class ConvolutionStep:
-    def __init__(self, input_pad, banyak_filter, filter_size, input_stride):
+    def __init__(self, banyak_channel, input_pad, banyak_filter, filter_size, input_stride, learning_rate):
         #NOTE: input untuk h dan w 
+        self.banyak_channel = banyak_channel
         self.input_pad = input_pad
         self.banyak_filter = banyak_filter
         self.filter_size = filter_size
         self.input_stride = input_stride
+        self.learning_rate = learning_rate
+        self.kernel_matrixes = []
+        self.kernel_matrixes_shape = (banyak_channel, banyak_filter, filter_size, filter_size)
+        self.bias_shape = (banyak_channel, banyak_filter)
 
         #Filter kernel matrixes & bias
-        kernel_matrixes = []
-        bias_array = []
-        for i in range(banyak_filter):
-            #Randomize weight
-            random_matrix = np.random.randint(-10,10,(filter_size,filter_size))
-            kernel_matrixes.append(random_matrix)
+        #Randomize weight
+        self.kernel_matrixes = np.random.randint(-10,10,self.kernel_matrixes_shape)
+        #Bias 
+        self.bias_matrix = np.random.randint(1,2, self.bias_shape)
 
-            #Bias 
-            bias_array.append(np.random.randint(1,2))
-        self.kernel_matrixes = kernel_matrixes
-        self.bias_array = bias_array
  
     def hitungOutput(self, input_matrixes):
         # Padding Input matrixes
         self.input_matrixes = input_matrixes
+        self.input_matrixes_shape = (len(input_matrixes), len(input_matrixes[0]), len(input_matrixes[0][0]))
         input_matrixes_after_padding = []
         
         for matrix in self.input_matrixes:
@@ -34,7 +35,9 @@ class ConvolutionStep:
         self.input_matrixes = input_matrixes_after_padding
 
         output=[]
+        channel_idx = 0
         for matriks in self.input_matrixes:
+            channel_idx += 1
             v_h= floor((len(matriks[0])-self.filter_size)/self.input_stride + 1)
             v_w = floor((len(matriks)-self.filter_size)/self.input_stride + 1)
             h = len(matriks[0])
@@ -42,7 +45,7 @@ class ConvolutionStep:
 
             output_matrixes = []
             for kernel_idx in range(self.banyak_filter):
-                kernel_matriks = self.kernel_matrixes[kernel_idx]
+                kernel_matriks = self.kernel_matrixes[channel_idx][kernel_idx]
                 v_w_counter = 0
                 i = 0
                 output_matrix=[]
@@ -69,7 +72,7 @@ class ConvolutionStep:
                 output_matrixes.append(output_matrix)
             output_final_matrix = [[0 for i_create in range(v_h)] for j_create in range(v_w)]
             #debug
-            #print(self.bias_array)
+            #print(self.bias_matrix)
             #print(output_matrixes)
             for _idx in range(len(output_matrixes)):
                 _matrix = output_matrixes[_idx]
@@ -77,11 +80,32 @@ class ConvolutionStep:
                     for _j in range(len(_matrix[0])):
                         output_final_matrix[_i][_j] += _matrix[_i][_j] 
                         if(_idx == len(output_matrixes)-1):
-                            output_final_matrix[_i][_j] += self.bias_array[kernel_idx]
+                            output_final_matrix[_i][_j] += self.bias_matrix[channel_idx][kernel_idx]
             output.append(output_final_matrix)
              
         self.output = output
         return output
+
+    def backpropagation(self, prev_layer_matrix):
+        delta_berat = np.zeros(self.kernel_matrixes_shape)
+        derivativ_for_next_layer = np.zeros(self.input_matrixes_shape)
+
+        for i in range(self.banyak_filter):
+            for j in range(self.banyak_channel):
+                delta_berat[i, j] = signal.correlate2d(self.input_matrixes[j], prev_layer_matrix[i], 'valid')
+                derivativ_for_next_layer[j] = signal.convolve2d(prev_layer_matrix[i], self.kernel_matrixes[j][i], 'full')
+        
+        self.kernel_matrixes -= self.learning_rate * delta_berat
+        self.bias_matrix -= prev_layer_matrix
+
+        return derivativ_for_next_layer
+
+        
+        
+
+
+        
+    
 
 # def test():
 #     #Ukuran input 

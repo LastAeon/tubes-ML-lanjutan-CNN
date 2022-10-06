@@ -43,18 +43,22 @@ class CNN:
             input_size = list(map(int, lines.pop(0).split(" ")))
             self.input_x = input_size[0]
             self.input_y = input_size[1]
+            self.input_channel = input_size[2]
 
             # read the rest
+            input_channel = self.input_channel
             for i in range(int(lines.pop(0))):
                 layer_info = lines.pop(0).split(" ")
                 layer_param = lines.pop(0).split(" ")
                 layer_type = layer_info[0] 
+                # learning rate belom dimasukin ke convo layer
                 if(layer_type == 'Dense'):
                     dense_architecture = layer_param[0]
                     self.dense = Dense(dense_architecture)
                 elif(layer_type == "Convolution"):
-                    layer = ConvolutionStep(int(layer_param[1]), int(layer_param[2]), int(layer_param[3]), int(layer_param[4]))
+                    layer = ConvolutionStep(input_channel, int(layer_param[1]), int(layer_param[2]), int(layer_param[3]), int(layer_param[4]))
                     self.layer_list.append(layer)
+                    input_channel = int(layer_param[2])
                 elif(layer_type == "Detector"):
                     layer = DetectorStep()
                     self.layer_list.append(layer)
