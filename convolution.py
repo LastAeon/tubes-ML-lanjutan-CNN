@@ -3,14 +3,14 @@ import numpy as np
 from scipy import signal
 
 class ConvolutionStep:
-    def __init__(self, banyak_channel, input_pad, banyak_filter, filter_size, input_stride, learning_rate):
+    def __init__(self, banyak_channel, input_pad, banyak_filter, filter_size, input_stride):
         #NOTE: input untuk h dan w 
+        self.type = 'convolution layer'
         self.banyak_channel = banyak_channel
         self.input_pad = input_pad
         self.banyak_filter = banyak_filter
         self.filter_size = filter_size
         self.input_stride = input_stride
-        self.learning_rate = learning_rate
         self.kernel_matrixes = []
         self.kernel_matrixes_shape = (banyak_channel, banyak_filter, filter_size, filter_size)
         self.bias_shape = (banyak_channel, banyak_filter)
@@ -18,8 +18,11 @@ class ConvolutionStep:
         #Filter kernel matrixes & bias
         #Randomize weight
         self.kernel_matrixes = np.random.randint(-10,10,self.kernel_matrixes_shape)
+        # self.kernel_matrixes = np.ones(self.kernel_matrixes_shape)
         #Bias 
         self.bias_matrix = np.random.randint(1,2, self.bias_shape)
+        # self.bias_matrix = np.ones(self.bias_shape)
+
 
  
     def hitungOutput(self, input_matrixes):
@@ -35,7 +38,7 @@ class ConvolutionStep:
         self.input_matrixes = input_matrixes_after_padding
 
         output=[]
-        channel_idx = 0
+        channel_idx = -1
         for matriks in self.input_matrixes:
             channel_idx += 1
             v_h= floor((len(matriks[0])-self.filter_size)/self.input_stride + 1)
@@ -86,6 +89,9 @@ class ConvolutionStep:
         self.output = output
         return output
 
+    def init_backpropagation(self, learning_rate):
+        self.learning_rate = learning_rate
+
     def backpropagation(self, prev_layer_matrix):
         delta_berat = np.zeros(self.kernel_matrixes_shape)
         derivativ_for_next_layer = np.zeros(self.input_matrixes_shape)
@@ -96,7 +102,7 @@ class ConvolutionStep:
                 derivativ_for_next_layer[j] = signal.convolve2d(prev_layer_matrix[i], self.kernel_matrixes[j][i], 'full')
         
         self.kernel_matrixes -= self.learning_rate * delta_berat
-        self.bias_matrix -= prev_layer_matrix
+        self.bias_matrix -= self.learning_rate * prev_layer_matrix
 
         return derivativ_for_next_layer
 

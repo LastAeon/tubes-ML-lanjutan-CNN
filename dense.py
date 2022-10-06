@@ -3,16 +3,17 @@ from util import flatten
 
 class Dense:
     def __init__(self, filename):
+        self.type = 'dense layer'
         self.ffnn = FFNN(filename)
     
     def predict_set_of_matrix(self, set_of_matrix):
         return self.ffnn.predict(flatten(set_of_matrix))
 
-    def backward_prep(self, expected_output, learning_rate):
+    def init_backpropagation(self, expected_output, learning_rate):
         self.ffnn.setBackwardParameter(expected_output, learning_rate)
 
-    def backward(self, batch_size, set_of_matrix):
-        self.ffnn.backward(batch_size, 0, 1, [flatten(set_of_matrix)])
+    def backpropagation(self, set_of_matrix):
+        self.ffnn.backward(1, 0, 1, [flatten(set_of_matrix)])
 
     def binary_cross_entropy(self):
         temp_array = []

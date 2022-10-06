@@ -1,4 +1,5 @@
 # baris 70-75 handling konvolusi dan detector masih salah
+from operator import truediv
 from convolution import *
 from pooling import *
 from detector import *
@@ -30,6 +31,7 @@ class CNN:
     layer_list = []
     input_x = 0
     input_y = 0
+    is_backward = False
     def __init__(self, filename):
         # recreate object
         self.layer_list = []
@@ -77,6 +79,29 @@ class CNN:
             output = self.layer_list[i].hitungOutput(output)
             
         #Dense layer
-        hasil_predict = self.dense.predict_set_of_matrix(output)
-        self.hasil_predict = hasil_predict
-        return hasil_predict
+        if(self.is_backward):
+            self.dense.backpropagation(output)
+            pass
+        else:
+            # hasil_predict = self.dense.predict_set_of_matrix(output)
+            # self.hasil_predict = hasil_predict
+            self.hasil_predict = self.dense.predict_set_of_matrix(output)
+            return self.hasil_predict
+
+    def init_backpropagation(self, learning_rate, expected_output):
+        self.expected_output = expected_output
+        self.learning_rate = learning_rate
+        self.dense.init_backpropagation(expected_output, learning_rate)
+        for layer in self.layer_list:
+            if layer.type == 'convolution layer':
+                layer.init_backpropagation(learning_rate)
+
+    def backpropagation(self, image_src, epoch, momentum):
+        self.is_backward = True
+        output = self.forwardPropagation(image_src)
+        binary_cross_entropy = self.dense.binary_cross_entropy()
+        print('binary_cross_entropy', binary_cross_entropy)
+
+        for i in range(len(self.layer_list)-1, 0, -1):
+            # itung error factor
+            self.layer_list[i].backpropagation(binary_cross_entropy)

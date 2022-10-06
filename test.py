@@ -6,9 +6,10 @@ import numpy as np
 
 
 
-a = [1,2]
+# a = [1,2]
 
-print(np.pad(a, 2, 'constant', constant_values=(0)))
+# print(np.pad(a, 2, 'constant', constant_values=(0)))
+
 # print(np.zeros((4, 2, 3)))
 # banyak_channel = 2
 # banyak_filter = 3
@@ -31,11 +32,45 @@ print(np.pad(a, 2, 'constant', constant_values=(0)))
 #     print(kernel_matrixes_tot[i])
 #     print()
 
-# # testing CNN
-# image_src = "test\cats\cat.0.jpg"
-# cnn_test = CNN("CNN_architecture.txt")
-# # cnn_test.forwardPropagation(image_src)
+# testing CNN
+image_src = "test\cats\cat.0.jpg"
+cnn_test = CNN("CNN_architecture.txt")
+# cnn_test.forwardPropagation(image_src)
+
+# # forward
 # print(cnn_test.forwardPropagation(image_src))
+
+# backward
+cnn_test.init_backpropagation(0.1, [[1]])
+cnn_test.backpropagation(image_src, 10, 1)
+
+
+
+# class coba_matrix:
+#     matrix = [0, 0, 0, 0]
+
+#     def set_matrix(self, a):
+#         matrix = [0, 0, 0, 0]
+#         # matrix = self.matrix
+#         for i in range(len(self.matrix)):
+#             matrix[i] = a
+#         self.matrix = matrix            
+#         return self.matrix
+
+#     def change_matrix(self, a):
+#         for i in range(len(self.matrix)):
+#             self.matrix[i] = a
+#         return self.matrix
+
+
+# cm = coba_matrix()
+
+# matrix = cm.matrix
+# matrix1 = cm.set_matrix(1) # self.matrix
+# matrix2 = cm.set_matrix(2)
+# matrix3 = cm.change_matrix(3)
+
+# print(matrix, matrix1, matrix2, matrix3)
 # cnn_test.layer_list[-1].binary_cross_entropy()
 
 # set_of_matrix = [[1, 10**2, 10**3], [10**4, 10**5, 10**6], [10**7, 10**8, 10**9]]

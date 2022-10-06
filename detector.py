@@ -38,6 +38,7 @@ def mult_2_matrix(m1: list[list[float]], m2: list[list[float]]):
 
 class DetectorStep:
     def __init__(self):
+        self.type = 'detector layer'
         self.prev_output = None
         return
     def hitungOutput(self, input_matrixes):
@@ -47,7 +48,7 @@ class DetectorStep:
             output_list.append(detected)
         self.prev_output = detected
         return output_list
-    def hitungBack(self, front_layer_output):
+    def backpropagation(self, front_layer_output):
         output_list = []
         for i in range (len(self.prev_output)):
             derived = derive_detector_output(self.prev_output[i])

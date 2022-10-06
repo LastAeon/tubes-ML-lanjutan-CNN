@@ -24,6 +24,9 @@ def image_to_matrix(src_path, x_size, y_size):
             rgb_g[x][y] = image[x][y][1]
             rgb_b[x][y] = image[x][y][2]
     
+    # print("rgb_r:", rgb_r)
+    # print("rgb_g:", rgb_g)
+    # print("rgb_b:", rgb_b)
     return [rgb_r, rgb_g, rgb_b]
 
 # # testing

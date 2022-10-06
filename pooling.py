@@ -75,6 +75,7 @@ def pooling_layer(raw_matrix_list, kernel_y, kernel_x, stride: int, mode: str= '
 
 class PoolingStep:
     def __init__(self, kernel_y, kernel_x, stride: int, mode: str= 'max'):
+        self.type = 'pooling layer'
         self.kernel_y = kernel_y
         self.kernel_x = kernel_x
         self.stride = stride
@@ -89,7 +90,7 @@ class PoolingStep:
         self.input = input_matrixes
         return output
 
-    def hitungBack(self, front_layer_derv_list):
+    def backpropagation(self, front_layer_derv_list):
         output = []
 
         for mtx_idx in range (len(front_layer_derv_list)) :
@@ -98,8 +99,11 @@ class PoolingStep:
             max_location_mtx = self.derived_output[mtx_idx]
 
             # Read where max value is located
-            for row_idx in range (len(front_layer_derv)):
-                for col_idx in range (len(front_layer_derv[row_idx])):
+            # for row_idx in range (len(front_layer_derv)):
+            #     for col_idx in range (len(front_layer_derv[row_idx])):
+            print("pooling prev layer input:", front_layer_derv.shape)
+            for row_idx in range (front_layer_derv.shape[0]):
+                for col_idx in range (front_layer_derv.shape[1]):
 
                     value = front_layer_derv[row_idx][col_idx]
 
