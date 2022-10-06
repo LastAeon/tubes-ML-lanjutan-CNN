@@ -5,10 +5,17 @@ from CNN import CNN
 
 
 # # testing CNN
-image_src = "test\cats\cat.0.jpg"
-cnn_test = CNN("CNN_architecture.txt")
-# cnn_test.forwardPropagation(image_src)
-print(cnn_test.forwardPropagation(image_src))
+# image_src = "test\cats\cat.0.jpg"
+# cnn_test = CNN("CNN_architecture.txt")
+# # cnn_test.forwardPropagation(image_src)
+# print(cnn_test.forwardPropagation(image_src))
+# cnn_test.layer_list[-1].binary_cross_entropy()
+
+set_of_matrix = [[1, 10**2, 10**3], [10**4, 10**5, 10**6], [10**7, 10**8, 10**9]]
+dense_testing = Dense('Dense_Architecture.txt')
+dense_testing.backward_prep([[1]], 1)
+dense_testing.backward(2, set_of_matrix)
+dense_testing.binary_cross_entropy()
 
 # #testing dense
 # set_of_matrix = [[[1, 10**2], [10**3, 10**4]], [[10**5, 10**6], [10**7, 10**8]]]
