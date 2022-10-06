@@ -80,8 +80,7 @@ class CNN:
             
         #Dense layer
         if(self.is_backward):
-            self.dense.backpropagation(output)
-            pass
+            return self.dense.backpropagation(output)
         else:
             # hasil_predict = self.dense.predict_set_of_matrix(output)
             # self.hasil_predict = hasil_predict
@@ -98,10 +97,12 @@ class CNN:
 
     def backpropagation(self, image_src, epoch, momentum):
         self.is_backward = True
-        output = self.forwardPropagation(image_src)
-        binary_cross_entropy = self.dense.binary_cross_entropy()
-        print('binary_cross_entropy', binary_cross_entropy)
 
-        for i in range(len(self.layer_list)-1, 0, -1):
-            # itung error factor
-            self.layer_list[i].backpropagation(binary_cross_entropy)
+        for iter in range(epoch):
+            output = self.forwardPropagation(image_src)
+            # for i in range(len(self.layer_list)-1, -1, -1):
+            for curr_layer in reversed(self.layer_list):
+                # itung error factor
+                print(curr_layer.type)
+                output = curr_layer.backpropagation(output)
+        self.is_backward = False

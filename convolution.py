@@ -13,15 +13,16 @@ class ConvolutionStep:
         self.input_stride = input_stride
         self.kernel_matrixes = []
         self.kernel_matrixes_shape = (banyak_channel, banyak_filter, filter_size, filter_size)
-        self.bias_shape = (banyak_channel, banyak_filter)
+        self.bias_shape = (banyak_filter)
+        self.prev_delta_berat = 0
 
         #Filter kernel matrixes & bias
         #Randomize weight
         self.kernel_matrixes = np.random.randint(-10,10,self.kernel_matrixes_shape)
         # self.kernel_matrixes = np.ones(self.kernel_matrixes_shape)
         #Bias 
-        self.bias_matrix = np.random.randint(1,2, self.bias_shape)
-        # self.bias_matrix = np.ones(self.bias_shape)
+        self.bias_array = np.random.randint(1,2, self.bias_shape)
+        # self.bias_array = np.ones(self.bias_shape)
 
 
  
@@ -74,18 +75,24 @@ class ConvolutionStep:
                     v_w_counter+=1
                 output_matrixes.append(output_matrix)
             output_final_matrix = [[0 for i_create in range(v_h)] for j_create in range(v_w)]
-            #debug
-            #print(self.bias_matrix)
-            #print(output_matrixes)
+            print("output_final_matrix0:", np.shape(output_final_matrix))
+            # #debug
+            # print(self.bias_array)
+            # print(output_matrixes)
             for _idx in range(len(output_matrixes)):
                 _matrix = output_matrixes[_idx]
                 for _i in range(len(_matrix)):  
                     for _j in range(len(_matrix[0])):
                         output_final_matrix[_i][_j] += _matrix[_i][_j] 
                         if(_idx == len(output_matrixes)-1):
-                            output_final_matrix[_i][_j] += self.bias_matrix[channel_idx][kernel_idx]
+                            output_final_matrix[_i][_j] += self.bias_array[kernel_idx]
             output.append(output_final_matrix)
-             
+            print("output_row:", np.shape(output_row))
+            print("output_matrix:", np.shape(output_matrix))
+            print("output_matrixes:", np.shape(output_matrixes))
+            print("output_final_matrix:", np.shape(output_final_matrix))
+            print("output:", np.shape(output))
+            print("bias_array:", np.shape(self.bias_array))
         self.output = output
         return output
 
@@ -95,14 +102,22 @@ class ConvolutionStep:
     def backpropagation(self, prev_layer_matrix):
         delta_berat = np.zeros(self.kernel_matrixes_shape)
         derivativ_for_next_layer = np.zeros(self.input_matrixes_shape)
+        print('dimensi delta berat:', np.shape(delta_berat))
+        print('dimensi input_matrixes:', np.shape(self.input_matrixes))
+        print('dimensi prev_layer_matrix:', np.shape(prev_layer_matrix))
 
         for i in range(self.banyak_filter):
             for j in range(self.banyak_channel):
-                delta_berat[i, j] = signal.correlate2d(self.input_matrixes[j], prev_layer_matrix[i], 'valid')
+                print(';, j:', i, j)
+                print(signal.correlate2d(self.input_matrixes[j], prev_layer_matrix[i], 'valid'))
+                print(np.shape(signal.correlate2d(self.input_matrixes[j], prev_layer_matrix[i], 'valid')))
+                delta_berat[j, i] = signal.correlate2d(self.input_matrixes[j], prev_layer_matrix[i], 'valid')
                 derivativ_for_next_layer[j] = signal.convolve2d(prev_layer_matrix[i], self.kernel_matrixes[j][i], 'full')
         
-        self.kernel_matrixes -= self.learning_rate * delta_berat
-        self.bias_matrix -= self.learning_rate * prev_layer_matrix
+        delta_bias = np.array([np.sum(prev_layer_matrix[_]) for _ in range(self.banyak_filter)])
+        print(delta_bias)
+        self.kernel_matrixes = self.kernel_matrixes - self.learning_rate * delta_berat
+        self.bias_array = self.bias_array - self.learning_rate * delta_bias
 
         return derivativ_for_next_layer
 

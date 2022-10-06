@@ -1,3 +1,5 @@
+import numpy as np
+
 def detector_elm(value: float):
     return max(0, value)
 
@@ -42,11 +44,12 @@ class DetectorStep:
         self.prev_output = None
         return
     def hitungOutput(self, input_matrixes):
+        print("detector:", np.shape(input_matrixes))
         output_list = []
         for matrix in input_matrixes:
             detected = detector(matrix)
             output_list.append(detected)
-        self.prev_output = detected
+        self.prev_output = output_list
         return output_list
     def backpropagation(self, front_layer_output):
         output_list = []

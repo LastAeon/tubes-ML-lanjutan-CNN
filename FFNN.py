@@ -117,12 +117,12 @@ class FFNN:
                     # self.printModel()
                     entry_index += 1
                 self.adjustWeight()
-                # self.printModel()
+                self.printModel()
             cumulative_error = self.computeCost(epoch_result, self.expected_output)
             iter += 1
             if(not(cumulative_error > error_threshold and iter < max_iteration)):
                 notDone = False
-        self.printModel()
+        # self.printModel()
         print("iter: ", iter)
         print("error: ", cumulative_error)
         self.cumulative_error = cumulative_error
