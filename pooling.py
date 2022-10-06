@@ -51,7 +51,7 @@ def pooling(raw_matrix, kernel_y, kernel_x, stride: int, mode: str= 'max' ):
                         # For old backprop: output_derivation[first_y + y][first_x + x] += 1/kernel_area
             
                 output_elm = sum(raw_elm_list) / len(raw_elm_list)
-                output_der_y.append(0,0)
+                output_der_y.append((0,0))
             
             output_y.append(output_elm)
             first_x += stride
@@ -69,6 +69,7 @@ def pooling_layer(raw_matrix_list, kernel_y, kernel_x, stride: int, mode: str= '
     for matrix in raw_matrix_list:
         pool_output, pool_der_output = pooling(matrix, kernel_y, kernel_x, stride, mode)
         output_list.append(pool_output)
+
         output_derivation_list.append(pool_der_output)
     return output_list, output_derivation_list
 
@@ -150,7 +151,7 @@ class PoolingStep:
 #         ]
 #     ]
 
-#     pooler = PoolingStep(2, 2, 1, 'max')
+#     pooler = PoolingStep(2, 2, 1, 'avg')
 
 #     pooling_output = pooler.hitungOutput(matrix)
 #     print("Pooling Output")
