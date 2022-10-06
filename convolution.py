@@ -15,6 +15,7 @@ class ConvolutionStep:
         self.kernel_matrixes_shape = (banyak_channel, banyak_filter, filter_size, filter_size)
         self.bias_shape = (banyak_filter)
         self.prev_delta_berat = 0
+        self.prev_delta_bias = 0
 
         #Filter kernel matrixes & bias
         #Randomize weight
@@ -75,7 +76,7 @@ class ConvolutionStep:
                     v_w_counter+=1
                 output_matrixes.append(output_matrix)
             output_final_matrix = [[0 for i_create in range(v_h)] for j_create in range(v_w)]
-            print("output_final_matrix0:", np.shape(output_final_matrix))
+            # print("output_final_matrix0:", np.shape(output_final_matrix))
             # #debug
             # print(self.bias_array)
             # print(output_matrixes)
@@ -87,37 +88,40 @@ class ConvolutionStep:
                         if(_idx == len(output_matrixes)-1):
                             output_final_matrix[_i][_j] += self.bias_array[kernel_idx]
             output.append(output_final_matrix)
-            print("output_row:", np.shape(output_row))
-            print("output_matrix:", np.shape(output_matrix))
-            print("output_matrixes:", np.shape(output_matrixes))
-            print("output_final_matrix:", np.shape(output_final_matrix))
-            print("output:", np.shape(output))
-            print("bias_array:", np.shape(self.bias_array))
+            # print("output_row:", np.shape(output_row))
+            # print("output_matrix:", np.shape(output_matrix))
+            # print("output_matrixes:", np.shape(output_matrixes))
+            # print("output_final_matrix:", np.shape(output_final_matrix))
+            # print("output:", np.shape(output))
+            # print("bias_array:", np.shape(self.bias_array))
         self.output = output
         return output
 
-    def init_backpropagation(self, learning_rate):
+    def init_backpropagation(self, learning_rate, momentum):
         self.learning_rate = learning_rate
+        self.momentum = momentum
 
     def backpropagation(self, prev_layer_matrix):
+        delta_bias = np.array([np.sum(prev_layer_matrix[_]) for _ in range(self.banyak_filter)])
         delta_berat = np.zeros(self.kernel_matrixes_shape)
         derivativ_for_next_layer = np.zeros(self.input_matrixes_shape)
-        print('dimensi delta berat:', np.shape(delta_berat))
-        print('dimensi input_matrixes:', np.shape(self.input_matrixes))
-        print('dimensi prev_layer_matrix:', np.shape(prev_layer_matrix))
+        # print('dimensi delta berat:', np.shape(delta_berat))
+        # print('dimensi input_matrixes:', np.shape(self.input_matrixes))
+        # print('dimensi prev_layer_matrix:', np.shape(prev_layer_matrix))
 
         for i in range(self.banyak_filter):
             for j in range(self.banyak_channel):
-                print(';, j:', i, j)
-                print(signal.correlate2d(self.input_matrixes[j], prev_layer_matrix[i], 'valid'))
-                print(np.shape(signal.correlate2d(self.input_matrixes[j], prev_layer_matrix[i], 'valid')))
+                # print(';, j:', i, j)
+                # print(signal.correlate2d(self.input_matrixes[j], prev_layer_matrix[i], 'valid'))
+                # print(np.shape(signal.correlate2d(self.input_matrixes[j], prev_layer_matrix[i], 'valid')))
                 delta_berat[j, i] = signal.correlate2d(self.input_matrixes[j], prev_layer_matrix[i], 'valid')
                 derivativ_for_next_layer[j] = signal.convolve2d(prev_layer_matrix[i], self.kernel_matrixes[j][i], 'full')
         
-        delta_bias = np.array([np.sum(prev_layer_matrix[_]) for _ in range(self.banyak_filter)])
-        print(delta_bias)
-        self.kernel_matrixes = self.kernel_matrixes - self.learning_rate * delta_berat
-        self.bias_array = self.bias_array - self.learning_rate * delta_bias
+        self.kernel_matrixes = self.kernel_matrixes - self.learning_rate * delta_berat - self.momentum*self.prev_delta_berat
+        self.bias_array = self.bias_array - self.learning_rate * delta_bias - self.momentum*self.prev_delta_bias
+
+        self.prev_delta_berat = delta_berat
+        self.prev_delta_bias = delta_bias
 
         return derivativ_for_next_layer
 

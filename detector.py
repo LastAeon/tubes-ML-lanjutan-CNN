@@ -44,7 +44,7 @@ class DetectorStep:
         self.prev_output = None
         return
     def hitungOutput(self, input_matrixes):
-        print("detector:", np.shape(input_matrixes))
+        # print("detector:", np.shape(input_matrixes))
         output_list = []
         for matrix in input_matrixes:
             detected = detector(matrix)

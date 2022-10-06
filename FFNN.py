@@ -123,8 +123,8 @@ class FFNN:
             if(not(cumulative_error > error_threshold and iter < max_iteration)):
                 notDone = False
         # self.printModel()
-        print("iter: ", iter)
-        print("error: ", cumulative_error)
+        # print("iter: ", iter)
+        # print("error: ", cumulative_error)
         self.cumulative_error = cumulative_error
 
     def add_buffer_layer(self, input_size, layer_size, layer_type="RELU"):

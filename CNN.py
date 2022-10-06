@@ -87,13 +87,13 @@ class CNN:
             self.hasil_predict = self.dense.predict_set_of_matrix(output)
             return self.hasil_predict
 
-    def init_backpropagation(self, learning_rate, expected_output):
+    def init_backpropagation(self, learning_rate, momentum, expected_output):
         self.expected_output = expected_output
         self.learning_rate = learning_rate
         self.dense.init_backpropagation(expected_output, learning_rate)
         for layer in self.layer_list:
             if layer.type == 'convolution layer':
-                layer.init_backpropagation(learning_rate)
+                layer.init_backpropagation(learning_rate, momentum)
 
     def backpropagation(self, image_src, epoch, momentum):
         self.is_backward = True
@@ -103,6 +103,6 @@ class CNN:
             # for i in range(len(self.layer_list)-1, -1, -1):
             for curr_layer in reversed(self.layer_list):
                 # itung error factor
-                print(curr_layer.type)
+                # print(curr_layer.type)
                 output = curr_layer.backpropagation(output)
         self.is_backward = False

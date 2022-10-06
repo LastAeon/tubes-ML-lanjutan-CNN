@@ -41,8 +41,8 @@ cnn_test = CNN("CNN_architecture.txt")
 # print(cnn_test.forwardPropagation(image_src))
 
 # backward
-cnn_test.init_backpropagation(0.1, [[0]])
-cnn_test.backpropagation(image_src, 1, 1)
+cnn_test.init_backpropagation(0.1, 0.1, [[0]])
+cnn_test.backpropagation(image_src, 10, 1)
 
 print(cnn_test.forwardPropagation(image_src))
 
