@@ -2,5 +2,5 @@
 RELU 2
 1 1 1 1 1 1 1 1 1 1
 1 1 1 1 1 1 1 1 1 1
-softmax 1
+sigmoid 1
 1 1 1
