@@ -1,11 +1,14 @@
 # baris 70-75 handling konvolusi dan detector masih salah
+import json
 from operator import truediv
 from convolution import *
+from kfold import val_train_split
 from pooling import *
 from detector import *
 from dense import *
 from util import image_to_matrix, read_image_from_source
 import copy
+import pandas as pd
 from sklearn.metrics import accuracy_score
 
 class CNN:
@@ -154,3 +157,36 @@ class CNN:
         accuracy = accuracy_score(validation_set[1], prediction)
 
         return accuracy
+
+    def save_model(self, target_directory: str = 'cnn_model.json'):
+        with open(target_directory, 'a') as f:
+            f.write(json.dumps(self.__dict__))
+
+    def train_90_10(self, dataset, epoch, learning_rate, momentum, with_validation = False, val_dataset: tuple[list, list] = None):
+        train_dataset, test_dataset = val_train_split(dataset, 10)
+        # print("TRAIN", len(train_dataset[0]))
+        self.backpropagation(dataset, epoch, learning_rate, momentum, with_validation, val_dataset)
+        
+        # Measure Accuracy
+        prediction = self.predict_list(test_dataset[0])
+        accuracy = accuracy_score(test_dataset[1], prediction)
+
+        print()
+        print("ACCURACY: ", accuracy)
+        print()
+    
+        # Confusion Matrix
+        data = {
+            'y_Actual':    test_dataset[1],
+            'y_Predicted': prediction
+        }
+
+        df = pd.DataFrame(data, columns=['y_Actual','y_Predicted'])
+
+        confusion_matrix = pd.crosstab(df['y_Actual'], df['y_Predicted'], rownames=['Actual'], colnames=['Predicted'])
+        
+        print("CONFUSION MATRIX")
+        print (confusion_matrix)
+        print()
+
+        
