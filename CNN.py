@@ -133,3 +133,24 @@ class CNN:
             prediction = 1 if prediction > 0.5 else 0
             output_list.append(prediction)
         return output_list
+    
+    def measure_model_accuracy(
+        architecture_dir, 
+        train_set,
+        validation_set,
+        epoch,
+        learning_rate,
+        momentum,
+    ) -> float:
+        cnn = CNN(architecture_dir)
+        cnn.backpropagation(
+            train_set, 
+            epoch, 
+            learning_rate, 
+            momentum
+        )
+
+        prediction = cnn.predict_list(validation_set[0])
+        accuracy = accuracy_score(validation_set[1], prediction)
+
+        return accuracy
