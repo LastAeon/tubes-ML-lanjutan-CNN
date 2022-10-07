@@ -4,7 +4,8 @@ from convolution import *
 from pooling import *
 from detector import *
 from dense import *
-from util import image_to_matrix
+from util import image_to_matrix, read_image_from_source
+import copy
 
 class CNN:
     #Convolution Layer
@@ -69,12 +70,12 @@ class CNN:
                     self.layer_list.append(layer)
         return
 
-    def forwardPropagation(self, image_src):
+    def forwardPropagation(self, matrix_input):
         #Input
-        matrix_input = image_to_matrix(image_src, self.input_x, self.input_y)
+        # matrix_input = image_to_matrix(image_src, self.input_x, self.input_y)
 
         #Convolutional layer
-        output = matrix_input
+        output = copy.deepcopy(matrix_input)
         for i in range(len(self.layer_list)):
             output = self.layer_list[i].hitungOutput(output)
             
@@ -95,14 +96,16 @@ class CNN:
             if layer.type == 'convolution layer':
                 layer.init_backpropagation(learning_rate, momentum)
 
-    def backpropagation(self, image_src, epoch, momentum):
+    def backpropagation(self, matrixes, epoch, momentum):
         self.is_backward = True
 
         for iter in range(epoch):
-            output = self.forwardPropagation(image_src)
-            # for i in range(len(self.layer_list)-1, -1, -1):
-            for curr_layer in reversed(self.layer_list):
-                # itung error factor
-                # print(curr_layer.type)
-                output = curr_layer.backpropagation(output)
+            print('epoch {} from {}', iter, epoch)
+            for matrix_input in matrixes:
+                output = self.forwardPropagation(matrix_input)
+                # for i in range(len(self.layer_list)-1, -1, -1):
+                for curr_layer in reversed(self.layer_list):
+                    # itung error factor
+                    # print(curr_layer.type)
+                    output = curr_layer.backpropagation(output)
         self.is_backward = False

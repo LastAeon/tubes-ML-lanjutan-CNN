@@ -9,14 +9,13 @@ def read_image_from_source(rootdir, x_size, y_size):
     for class_name in os.listdir(rootdir):
         subdir = os.path.join(rootdir, class_name)
         if os.path.isdir(subdir):
-            matrixes = []
             for image in os.listdir(subdir):
-                matrixes.append(image_to_matrix(os.path.join(subdir, image), x_size, y_size))
-            return_matrixes.append(matrixes)
-            classes.append(class_name)
+                return_matrixes.append(image_to_matrix(os.path.join(subdir, image), x_size, y_size))
+                classes.append(class_name)
             # print(d)
-    print('classes:', classes)
-    print('return_matrixes shape:', np.shape(return_matrixes))
+    # print('return_matrixes shape:', np.shape(return_matrixes))
+    # print(classes)
+    return return_matrixes, classes
     
 
 def flatten(set_of_matrix):

@@ -1,5 +1,5 @@
 from FFNN import FFNN
-from util import flatten
+from util import flatten, read_image_from_source, image_to_matrix
 from dense import Dense
 from CNN import CNN
 import numpy as np
@@ -34,6 +34,7 @@ import numpy as np
 
 # testing CNN
 image_src = "test\cats\cat.0.jpg"
+img_folder = 'test'
 cnn_test = CNN("CNN_architecture.txt")
 # cnn_test.forwardPropagation(image_src)
 
@@ -41,6 +42,7 @@ cnn_test = CNN("CNN_architecture.txt")
 # print(cnn_test.forwardPropagation(image_src))
 
 # backward
+input_matrix, expected_output = read_image_from_source(img_folder)
 cnn_test.init_backpropagation(0.1, 0.1, [[0]])
 cnn_test.backpropagation(image_src, 10, 1)
 
