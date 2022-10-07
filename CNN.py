@@ -96,9 +96,11 @@ class CNN:
             if layer.type == 'convolution layer':
                 layer.init_backpropagation(learning_rate, momentum)
 
-    def backpropagation(self, matrixes, epoch, momentum):
+    def backpropagation(self, dataset, epoch, learning_rate, momentum):
         self.is_backward = True
 
+        matrixes = dataset[0]
+        self.init_backpropagation(learning_rate, momentum, dataset[1])
         for iter in range(epoch):
             print('epoch {} from {}', iter, epoch)
             for single_matrix in matrixes:

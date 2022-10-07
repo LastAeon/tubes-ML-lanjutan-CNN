@@ -1,4 +1,6 @@
 from random import *
+import copy
+
 
 def crossValSplit(dataset, numFolds):
     '''
@@ -10,16 +12,41 @@ def crossValSplit(dataset, numFolds):
     Output:
         split data
     '''
-    dataSplit = list()
-    dataCopy = list(dataset)
-    foldSize = int(len(dataset) / numFolds)
+    x_split = list()
+    y_split = list()
+    x_copy = copy.copy(dataset[0])
+    y_copy = copy.copy(dataset[1])
+    foldSize = int(len(x_copy) / numFolds)
+    remaining = len(x_copy)%numFolds
+    remaining_idx = 0
     for _ in range(numFolds):
-        fold = list()
-        while len(fold) < foldSize:
-            index = randrange(len(dataCopy))
-            fold.append(dataCopy.pop(index))
-        dataSplit.append(fold)
-    return dataSplit
+        x_fold = list()
+        y_fold = list()
+        while len(x_fold) < foldSize:
+            index = randrange(len(x_copy))
+            x_fold.append(x_copy.pop(index))
+            y_fold.append(y_copy.pop(index))
+
+        if(remaining_idx < remaining):
+            index = randrange(len(x_copy))
+            x_fold.append(x_copy.pop(index))
+            y_fold.append(y_copy.pop(index))
+            remaining_idx += 1
+        x_split.append(x_fold)
+        y_split.append(y_fold)
+    return [x_split, y_split]
+
+def val_train_split(dataset, val_percentage):
+    x_train = copy.copy(dataset[0])
+    y_train = copy.copy(dataset[1])
+    x_val = list()
+    y_val = list()
+    val_size = int(len(x_train) * val_percentage / 100)
+    for _ in range(val_size):
+        index = randrange(len(x_train))
+        x_val.append(x_train.pop(index))
+        y_val.append(y_train.pop(index))
+    return [x_train, y_train], [x_val, y_val]
 
 #test 
 # import numpy as np

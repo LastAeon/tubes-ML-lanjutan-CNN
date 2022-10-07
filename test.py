@@ -1,10 +1,10 @@
-from FFNN import FFNN
+# from FFNN import FFNN
 from util import flatten, read_image_from_source, image_to_matrix
-from dense import Dense
-from CNN import CNN
+from kfold import crossValSplit, val_train_split
+# from dense import Dense
+# from CNN import CNN
 import numpy as np
-
-
+from sklearn import preprocessing
 
 # a = [1,2]
 
@@ -35,20 +35,28 @@ import numpy as np
 # testing CNN
 image_src = "test\cats\cat.0.jpg"
 img_folder = 'test'
-cnn_test = CNN("CNN_architecture.txt")
+# cnn_test = CNN("CNN_architecture.txt")
 # cnn_test.forwardPropagation(image_src)
 
 # # forward
 # print(cnn_test.forwardPropagation(image_src))
 
 # backward
-input_matrix, expected_output = read_image_from_source(img_folder)
+input_matrix, expected_output = read_image_from_source(img_folder,3,7)
 # expected_output = encode(expected_output) -> belom tau pake apa
+le = preprocessing.LabelEncoder()
+expected_output = le.fit_transform(expected_output).tolist()
 
-cnn_test.init_backpropagation(0.1, 0.1, expected_output)
-cnn_test.backpropagation(input_matrix, 10, 1)
+print("Expected:",expected_output)
 
-print(cnn_test.forwardPropagation(image_src))
+print(input_matrix[::6][0][0], expected_output[::6])
+print("crossValSplit:", crossValSplit([input_matrix[::6][0][0], expected_output[::6]], 3))
+print("val_train_split:", val_train_split([input_matrix[::6][0][0], expected_output[::6]], 50))
+
+# cnn_test.init_backpropagation(0.1, 0.1, expected_output)
+# cnn_test.backpropagation(input_matrix, 10, 1)
+
+# print(cnn_test.forwardPropagation(image_src))
 
 # mat1 = [1, 1, 1]
 # mat2 = [[1, 2, 3], [1, 2, 3]]
