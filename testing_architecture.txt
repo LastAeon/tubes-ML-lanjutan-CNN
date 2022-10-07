@@ -1,0 +1,4 @@
+C:\My\Kuliah\AML\Tubes1\Milestone1\tubes-ML-lanjutan-CNN\train
+C:\My\Kuliah\AML\Tubes1\Milestone1\tubes-ML-lanjutan-CNN\test
+CNN_architecture.txt
+10 .1 0

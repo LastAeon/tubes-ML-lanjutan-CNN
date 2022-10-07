@@ -6,6 +6,7 @@ from detector import *
 from dense import *
 from util import image_to_matrix, read_image_from_source
 import copy
+from sklearn.metrics import accuracy_score
 
 class CNN:
     #Convolution Layer
@@ -70,7 +71,7 @@ class CNN:
                     self.layer_list.append(layer)
         return
 
-    def forwardPropagation(self, matrix_input):
+    def forwardPropagation(self, matrix_input, print_output = False):
         #Input
         # matrix_input = image_to_matrix(image_src, self.input_x, self.input_y)
 
@@ -78,6 +79,11 @@ class CNN:
         output = copy.deepcopy(matrix_input)
         for i in range(len(self.layer_list)):
             output = self.layer_list[i].hitungOutput(output)
+            if (print_output):
+                print(f"Layer {i}:")
+                print(np.array(output))
+                print()
+                pass
         #Dense layer
         if(self.is_backward):
             return self.dense.backpropagation(output)
@@ -92,7 +98,7 @@ class CNN:
             if layer.type == 'convolution layer':
                 layer.init_backpropagation(self.learning_rate, self.momentum)
 
-    def backpropagation(self, dataset, epoch, learning_rate, momentum):
+    def backpropagation(self, dataset, epoch, learning_rate, momentum, with_validation = False, val_dataset: tuple[list, list] = None):
         self.learning_rate = learning_rate
         self.momentum = momentum
         self.is_backward = True
@@ -110,4 +116,20 @@ class CNN:
                     # itung error factor
                     # print(curr_layer.type)
                     output = curr_layer.backpropagation(output)
+            if (with_validation):
+                self.is_backward = False
+                prediction = self.predict_list(val_dataset[0])
+                # print(prediction)
+                # print(val_dataset[1])
+                print(f"Accuracy: {accuracy_score(val_dataset[1], prediction)}")
+                print()
+                self.is_backward = True
         self.is_backward = False
+
+    def predict_list(self, dataset: list):
+        output_list = []
+        for data in dataset:
+            prediction = self.forwardPropagation(data)[0]
+            prediction = 1 if prediction > 0.5 else 0
+            output_list.append(prediction)
+        return output_list

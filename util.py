@@ -17,6 +17,8 @@ def read_image_from_source(rootdir, x_size, y_size):
     # print(classes)
     return return_matrixes, classes
     
+def read_image_from_source_2(rootdir, dim_size):
+    return read_image_from_source(rootdir, dim_size[0], dim_size[1])
 
 def flatten(set_of_matrix):
     resuting_array = []
