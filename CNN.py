@@ -1,6 +1,7 @@
 # baris 70-75 handling konvolusi dan detector masih salah
 import json
 from operator import truediv
+import pickle
 from convolution import *
 from kfold import val_train_split
 from pooling import *
@@ -38,6 +39,9 @@ class CNN:
     input_y = 0
     is_backward = False
     def __init__(self, filename):
+        if (filename == None):
+            return
+
         # recreate object
         self.layer_list = []
         
@@ -165,9 +169,21 @@ class CNN:
 
         return accuracy
 
-    def save_model(self, target_directory: str = 'cnn_model.json'):
-        with open(target_directory, 'a') as f:
-            f.write(json.dumps(self.__dict__))
+    def save_model(self, target_directory: str = 'cnn_model.pickle'):
+        # model_dict = dict(self.__dict__)
+        # model_dict['layer_list_for_save'] = []
+        # for layer in self.layer_list:
+        #     model_dict['layer_list_for_save'].append(layer.to_jsonable())
+
+        with open(target_directory, 'wb') as f:
+            # f.write(json.dumps(model_dict))
+            pickle.dump(self.__dict__, f, pickle.HIGHEST_PROTOCOL)
+
+    def load_model(source_directory: str):
+        with open(source_directory, 'rb') as f:
+            cnn: CNN = CNN(None)
+            cnn.__dict__ = pickle.load(f)
+            return cnn
 
     def train_90_10(self, dataset, epoch, learning_rate, momentum, with_validation = False, val_dataset: tuple[list, list] = None):
         train_dataset, test_dataset = val_train_split(dataset, 10)
