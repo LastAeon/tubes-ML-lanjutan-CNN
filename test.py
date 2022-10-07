@@ -36,6 +36,7 @@ from sklearn import preprocessing
 image_src = "test\cats\cat.0.jpg"
 img_folder = 'test'
 cnn_test = CNN("CNN_architecture.txt")
+cnn_test.dense.ffnn.printModel()
 
 # backward
 input_matrix, expected_output = read_image_from_source(img_folder,cnn_test.input_x,cnn_test.input_y)

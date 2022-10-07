@@ -72,6 +72,13 @@ class CNN:
                 elif(layer_type == "Pooling"):
                     layer = PoolingStep(int(layer_param[1]), int(layer_param[2]), int(layer_param[3]))
                     self.layer_list.append(layer)
+
+        # fix dense first layer weight
+        output = np.ones((self.input_channel, self.input_y, self.input_x))
+        for i in range(len(self.layer_list)):
+            output = self.layer_list[i].hitungOutput(output)
+        
+        self.dense.fit_first_layer_weight(output)
         return
 
     def forwardPropagation(self, matrix_input, print_output = False):

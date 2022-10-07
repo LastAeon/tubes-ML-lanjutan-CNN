@@ -1,4 +1,5 @@
 from FFNN import FFNN
+from Neuron import Neuron
 from util import flatten
 import numpy as np
 
@@ -13,21 +14,24 @@ class Dense:
     def init_backpropagation(self, expected_output, learning_rate):
         self.ffnn.setBackwardParameter(expected_output, learning_rate)
 
+    def fit_first_layer_weight(self, set_of_matrix):
+        flatenned_matrix = flatten(set_of_matrix) # fix weigh for first layer
+        # print("flatenned_matrix size:", len(flatenned_matrix))
+        first_layer_neuron_list = self.ffnn.layer_list[0].neurons
+        for i in range(len(first_layer_neuron_list)):
+            first_layer_neuron_list[i] = Neuron([1 for _ in range(len(flatenned_matrix)+1)]) # +1 karena bias
+
     def backpropagation(self, set_of_matrix):
         original_shape = np.shape(set_of_matrix)
-        # print('original_shape:', original_shape)
         layer_weight = [self.weight_in_layer(i) for i in range(len(self.ffnn.layer_list))]
-        # print(layer_weight)
+
         self.ffnn.backward(1, 0, 1, [flatten(set_of_matrix)])
+
         derivativ_for_next_layer = self.binary_cross_entropy()
-
         for i in range(len(self.ffnn.layer_list)-1, -1, -1):
-            # print('derivativ_for_next_layer:', derivativ_for_next_layer)
-            # print('layer_weight:', layer_weight[i])
             derivativ_for_next_layer = np.dot(derivativ_for_next_layer, layer_weight[i])
-
         derivativ_for_next_layer = np.reshape(derivativ_for_next_layer, original_shape)
-        # print('dense result:', derivativ_for_next_layer)
+        
         return derivativ_for_next_layer
 
     def binary_cross_entropy(self):
