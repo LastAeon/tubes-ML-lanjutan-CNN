@@ -101,8 +101,8 @@ class CNN:
 
         for iter in range(epoch):
             print('epoch {} from {}', iter, epoch)
-            for matrix_input in matrixes:
-                output = self.forwardPropagation(matrix_input)
+            for single_matrix in matrixes:
+                output = self.forwardPropagation(single_matrix)
                 # for i in range(len(self.layer_list)-1, -1, -1):
                 for curr_layer in reversed(self.layer_list):
                     # itung error factor

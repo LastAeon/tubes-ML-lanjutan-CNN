@@ -43,8 +43,10 @@ cnn_test = CNN("CNN_architecture.txt")
 
 # backward
 input_matrix, expected_output = read_image_from_source(img_folder)
-cnn_test.init_backpropagation(0.1, 0.1, [[0]])
-cnn_test.backpropagation(image_src, 10, 1)
+# expected_output = encode(expected_output) -> belom tau pake apa
+
+cnn_test.init_backpropagation(0.1, 0.1, expected_output)
+cnn_test.backpropagation(input_matrix, 10, 1)
 
 print(cnn_test.forwardPropagation(image_src))
 
