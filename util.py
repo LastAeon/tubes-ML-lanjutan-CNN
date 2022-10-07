@@ -1,5 +1,23 @@
 import numpy as np
 import cv2
+import os
+ 
+def read_image_from_source(rootdir, x_size, y_size):
+    # rootdir = 'path/to/dir'
+    return_matrixes = []
+    classes = []
+    for class_name in os.listdir(rootdir):
+        subdir = os.path.join(rootdir, class_name)
+        if os.path.isdir(subdir):
+            matrixes = []
+            for image in os.listdir(subdir):
+                matrixes.append(image_to_matrix(os.path.join(subdir, image), x_size, y_size))
+            return_matrixes.append(matrixes)
+            classes.append(class_name)
+            # print(d)
+    print('classes:', classes)
+    print('return_matrixes shape:', np.shape(return_matrixes))
+    
 
 def flatten(set_of_matrix):
     resuting_array = []
@@ -33,3 +51,5 @@ def image_to_matrix(src_path, x_size, y_size):
 # src_path = "test\cats\cat.0.jpg"
 # result = image_to_matrix(src_path, 4, 5)
 # print(len(result[0]), len(result[0][0]), result[0][0][0])
+
+read_image_from_source('test', 3, 7)
