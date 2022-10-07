@@ -1,8 +1,8 @@
-# from FFNN import FFNN
+from FFNN import FFNN
 from util import flatten, read_image_from_source, image_to_matrix
 from kfold import crossValSplit, val_train_split
-# from dense import Dense
-# from CNN import CNN
+from dense import Dense
+from CNN import CNN
 import numpy as np
 from sklearn import preprocessing
 
@@ -35,28 +35,32 @@ from sklearn import preprocessing
 # testing CNN
 image_src = "test\cats\cat.0.jpg"
 img_folder = 'test'
-# cnn_test = CNN("CNN_architecture.txt")
-# cnn_test.forwardPropagation(image_src)
-
-# # forward
-# print(cnn_test.forwardPropagation(image_src))
+cnn_test = CNN("CNN_architecture.txt")
 
 # backward
-input_matrix, expected_output = read_image_from_source(img_folder,3,7)
-# expected_output = encode(expected_output) -> belom tau pake apa
+input_matrix, expected_output = read_image_from_source(img_folder,cnn_test.input_x,cnn_test.input_y)
 le = preprocessing.LabelEncoder()
 expected_output = le.fit_transform(expected_output).tolist()
 
-print("Expected:",expected_output)
+# print("Expected:",expected_output)
 
-print(input_matrix[::6][0][0], expected_output[::6])
-print("crossValSplit:", crossValSplit([input_matrix[::6][0][0], expected_output[::6]], 3))
-print("val_train_split:", val_train_split([input_matrix[::6][0][0], expected_output[::6]], 50))
+# print(input_matrix[::6][0][0], expected_output[::6])
+# print("crossValSplit:", crossValSplit([input_matrix[::6][0][0], expected_output[::6]], 3))
+# print("val_train_split:", val_train_split([input_matrix[::6][0][0], expected_output[::6]], 50))
 
-# cnn_test.init_backpropagation(0.1, 0.1, expected_output)
-# cnn_test.backpropagation(input_matrix, 10, 1)
+# print("input_matrix:", np.shape(input_matrix))
+# print("expected_output:", np.shape(expected_output))
+cnn_test.backpropagation([input_matrix, expected_output], 10, 0.1, 0.1)
 
-# print(cnn_test.forwardPropagation(image_src))
+# print(cnn_test.forwardPropagation(input_matrix[0]))
+
+# set_of_matrix = [[1, 10**2, 10**3], [10**4, 10**5, 10**6], [10**7, 10**8, 10**9]]
+# dense_testing = Dense('Dense_Architecture.txt')
+# # dense_testing.ffnn.printModel()
+# dense_testing.init_backpropagation([[1]], 1)
+# print(dense_testing.backpropagation(set_of_matrix))
+# print(dense_testing.binary_cross_entropy())
+
 
 # mat1 = [1, 1, 1]
 # mat2 = [[1, 2, 3], [1, 2, 3]]
@@ -89,13 +93,6 @@ print("val_train_split:", val_train_split([input_matrix[::6][0][0], expected_out
 
 # print(matrix, matrix1, matrix2, matrix3)
 # cnn_test.layer_list[-1].binary_cross_entropy()
-
-# set_of_matrix = [[1, 10**2, 10**3], [10**4, 10**5, 10**6], [10**7, 10**8, 10**9]]
-# dense_testing = Dense('Dense_Architecture.txt')
-# # dense_testing.ffnn.printModel()
-# dense_testing.init_backpropagation([[1]], 1)
-# print(dense_testing.backpropagation(set_of_matrix))
-# print(dense_testing.binary_cross_entropy())
 
 # #testing dense
 # set_of_matrix = [[[1, 10**2], [10**3, 10**4]], [[10**5, 10**6], [10**7, 10**8]]]

@@ -78,7 +78,6 @@ class CNN:
         output = copy.deepcopy(matrix_input)
         for i in range(len(self.layer_list)):
             output = self.layer_list[i].hitungOutput(output)
-            
         #Dense layer
         if(self.is_backward):
             return self.dense.backpropagation(output)
@@ -88,23 +87,24 @@ class CNN:
             self.hasil_predict = self.dense.predict_set_of_matrix(output)
             return self.hasil_predict
 
-    def init_backpropagation(self, learning_rate, momentum, expected_output):
-        self.expected_output = expected_output
-        self.learning_rate = learning_rate
-        self.dense.init_backpropagation(expected_output, learning_rate)
+    def init_backpropagation(self):
         for layer in self.layer_list:
             if layer.type == 'convolution layer':
-                layer.init_backpropagation(learning_rate, momentum)
+                layer.init_backpropagation(self.learning_rate, self.momentum)
 
     def backpropagation(self, dataset, epoch, learning_rate, momentum):
+        self.learning_rate = learning_rate
+        self.momentum = momentum
         self.is_backward = True
-
+        
         matrixes = dataset[0]
-        self.init_backpropagation(learning_rate, momentum, dataset[1])
+        expected_output = dataset[1]
+        self.init_backpropagation()
         for iter in range(epoch):
-            print('epoch {} from {}', iter, epoch)
-            for single_matrix in matrixes:
-                output = self.forwardPropagation(single_matrix)
+            print('epoch {} from {}'.format(iter, epoch))
+            for idx in range(len(matrixes)):
+                self.dense.init_backpropagation([[expected_output[idx]]], self.learning_rate)
+                output = self.forwardPropagation(matrixes[idx])
                 # for i in range(len(self.layer_list)-1, -1, -1):
                 for curr_layer in reversed(self.layer_list):
                     # itung error factor
