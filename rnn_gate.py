@@ -15,9 +15,7 @@ class Cell:
 
     def printNeuron(self):
         print(self.U, self.f, self.i, self.c, self.o)
-    def __init__(self, rand_initialize, U, f, i, c, o, timesteps=0):
-        #Not implemented input size
-
+    def __init__(self, rand_initialize, U, f, i, c, o, input_length=0):
         if(rand_initialize == False):
             self.U = U
             self.f = f
@@ -42,7 +40,25 @@ class Cell:
             # self.cprev = 0
             # self.hprev = 0
         else:
-            print("Not Implemented")
+            self.Uf = np.random.rand(input_length).tolist()
+            self.Ui = np.random.rand(input_length).tolist()
+            self.Uc = np.random.rand(input_length).tolist()
+            self.Uo = np.random.rand(input_length).tolist()
+            
+            self.Wf = np.random.rand()
+            self.bf = np.random.rand()
+            self.Wi = np.random.rand()
+            self.bi = np.random.rand()
+            self.Wc = np.random.rand()
+            self.bc = np.random.rand()
+            self.Wo = np.random.rand()
+            self.bo = np.random.rand()
+
+            self.U = [self.Uf,self.Ui,self.Uc,self.Uo]
+            self.f = [self.Wf,self.bf]
+            self.i = [self.Wi,self.bi]
+            self.c = [self.Wc,self.bc]
+            self.o = [self.Wo,self.bo]
     
     def calculate_timestep(self,x, cprev=0, hprev=0, verbose=False):
         ft = self.calculate_forgot(self.Uf, x, self.Wf, hprev, self.bf)
@@ -112,6 +128,19 @@ class Cell:
 # Wo, bo = .25, .1
 
 # testCell = Cell(False,[Uf,Ui,Uc,Uo],[Wf,bf],[Wi,bi],[Wc,bc],[Wo,bo])
+# for x in X:
+#     hasil = testCell.calculate_timestep(x,verbose=True)
+#     print(hasil)
+# testCell.printNeuron()
+
+# X = [
+#     [1, 2],
+#     [.5, 3],
+#     [1, 2],
+#     [.5, 3],
+# ]
+
+# testCell = Cell(True,0,0,0,0,0,len(X[0]))
 # for x in X:
 #     hasil = testCell.calculate_timestep(x,verbose=True)
 #     print(hasil)
