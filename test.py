@@ -35,24 +35,24 @@ from sklearn import preprocessing
 
 # testing LSTM
 X = [
-    [1, 2],
-    [.5, 3]
+    [1, 2, 3],
+    [.5, 3, 3]
 ]
 
-rnn_test = LSTM("LSTM_Architecture.txt")
+rnn_test = LSTM("LSTM_Architecture_Random_Weight.txt")
 rnn_test.printModel()
 print("LSTM result:", rnn_test.predict(X))
 
 # testing CNN
-image_src = "test\cats\cat.0.jpg"
-img_folder = 'test'
-cnn_test = CNN("CNN_architecture.txt")
-cnn_test.dense.ffnn.printModel()
+# image_src = "test\cats\cat.0.jpg"
+# img_folder = 'test'
+# cnn_test = CNN("CNN_architecture.txt")
+# cnn_test.dense.ffnn.printModel()
 
 # backward
-input_matrix, expected_output = read_image_from_source(img_folder,cnn_test.input_x,cnn_test.input_y)
-le = preprocessing.LabelEncoder()
-expected_output = le.fit_transform(expected_output).tolist()
+# input_matrix, expected_output = read_image_from_source(img_folder,cnn_test.input_x,cnn_test.input_y)
+# le = preprocessing.LabelEncoder()
+# expected_output = le.fit_transform(expected_output).tolist()
 
 # print("Expected:",expected_output)
 
@@ -62,7 +62,7 @@ expected_output = le.fit_transform(expected_output).tolist()
 
 # print("input_matrix:", np.shape(input_matrix))
 # print("expected_output:", np.shape(expected_output))
-cnn_test.backpropagation([input_matrix, expected_output], 10, 0.1, 0.1)
+# cnn_test.backpropagation([input_matrix, expected_output], 10, 0.1, 0.1)
 
 
 

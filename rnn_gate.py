@@ -14,7 +14,12 @@ class Cell:
         return self.calculate_timestep(x, cprev, hprev, verbose)
 
     def printNeuron(self):
-        print(self.U, self.f, self.i, self.c, self.o)
+        print("U", self.U)
+        print("f", self.f)
+        print("i", self.i)
+        print("c", self.c)
+        print("o", self.o)
+
     def __init__(self, rand_initialize, U, f, i, c, o, input_length=0):
         if(rand_initialize == False):
             self.U = U

@@ -20,7 +20,6 @@ class Layer_LSTM:
 
     def hitungOutput(self, layerInput):
         self.output.clear()
-        layerInput.insert(0, self.bias)
         ct = 0
         ht = 0
         i = 0
@@ -39,12 +38,13 @@ class Layer_LSTM:
         # if (self.aktivasi == Activation.softmax):
         #     self.output = softmax(self.output)
         self.output.append(ht)
+        # print("LSTM output:", self.output, ct, ht)
 
     def printLayer(self):
         print("Layer:  LSTM")
         i = 1
         for n in self.neurons:
-            print(f"Cell {i}:", end=" ")
+            print(f"Cell {i}:")
             n.printNeuron()
             i += 1
 

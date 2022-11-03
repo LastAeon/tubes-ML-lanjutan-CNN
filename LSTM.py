@@ -58,7 +58,6 @@ class LSTM:
         for i in self.layer_list:
             i.hitungOutput(output)
             output = i.getOutput()
-        # print("output ", output)
         return output
 
 

@@ -1,4 +1,4 @@
 2
-LSTM 2 false 2
+LSTM 2 true 3
 sigmoid 1
-1 1 1
+1 1
