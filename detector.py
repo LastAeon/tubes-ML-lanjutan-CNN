@@ -3,7 +3,7 @@ import numpy as np
 def detector_elm(value: float):
     return max(0, value)
 
-def detector(matrix: list[list[float]]): # Pokoknya, matrix tipenya array of array of float
+def detector(matrix): # Pokoknya, matrix tipenya array of array of float
     new_matrix = []
     for row in matrix:
         new_row = []
@@ -13,7 +13,7 @@ def detector(matrix: list[list[float]]): # Pokoknya, matrix tipenya array of arr
         new_matrix.append(new_row)
     return new_matrix
 
-def derive_detector_output(matrix: list[list[float]]):
+def derive_detector_output(matrix):
     new_matrix = []
     for row in matrix:
         new_row = []
@@ -23,7 +23,7 @@ def derive_detector_output(matrix: list[list[float]]):
         new_matrix.append(new_row)
     return new_matrix
 
-def mult_2_matrix(m1: list[list[float]], m2: list[list[float]]):
+def mult_2_matrix(m1, m2):
     if (len(m1) != len(m2) or len(m1[0]) != len(m2[0])):
         raise Exception('mult_2_matrix: 2 matrices has different dimension')
     
