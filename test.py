@@ -40,7 +40,8 @@ X = [
 ]
 
 rnn_test = LSTM("LSTM_Architecture.txt")
-rnn_test.predict(X)
+rnn_test.printModel()
+print("LSTM result:", rnn_test.predict(X))
 
 # testing CNN
 image_src = "test\cats\cat.0.jpg"
