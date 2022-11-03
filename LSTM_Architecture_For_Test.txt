@@ -1,0 +1,4 @@
+2
+LSTM 5 true 4
+linear 1
+1 1
