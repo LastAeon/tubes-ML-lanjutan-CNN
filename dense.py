@@ -1,4 +1,5 @@
 from FFNN import FFNN
+from LSTM import LSTM
 from Neuron import Neuron
 from util import flatten
 import numpy as np
@@ -6,7 +7,8 @@ import numpy as np
 class Dense:
     def __init__(self, filename):
         self.type = 'dense layer'
-        self.ffnn = FFNN(filename)
+        # self.ffnn = FFNN(filename)
+        self.ffnn = LSTM(filename)
     
     def predict_set_of_matrix(self, set_of_matrix):
         return self.ffnn.predict(flatten(set_of_matrix))

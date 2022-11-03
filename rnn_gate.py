@@ -8,10 +8,23 @@ class Cell:
     #i: input gate weight & bias
     #c: cell state weight & bias
     #o: output gate weight & bias
+    output = []
+
+    def hitungValue(self,x, cprev, hprev, verbose=False):
+        return self.calculate_timestep(x, cprev, hprev, verbose)
+
+    def printNeuron(self):
+        print(self.U, self.f, self.i, self.c, self.o)
     def __init__(self, rand_initialize, U, f, i, c, o):
         #Not implemented input size
 
         if(rand_initialize == False):
+            self.U = U
+            self.f = f
+            self.i = i
+            self.c = c
+            self.o = o
+
             self.Uf = U[0]
             self.Ui = U[1]
             self.Uc = U[2]
@@ -26,17 +39,17 @@ class Cell:
             self.Wo = o[0]
             self.bo = o[1]
 
-            self.cprev = 0
-            self.hprev = 0
+            # self.cprev = 0
+            # self.hprev = 0
         else:
             print("Not Implemented")
     
-    def calculate_timestep(self,x,verbose):
-        ft = self.calculate_forgot(Uf, x, Wf, self.hprev, bf)
-        it = self.calculate_input(Ui, x, Wi, self.hprev, bi)
-        candidate = self.calculate_candidate(Uc, x, Wc, self.hprev, bc)
-        ct = self.calculate_cell(ft, self.cprev, it, candidate)
-        ot = self.calculate_output(Uo, x, Wo, self.hprev, bo)
+    def calculate_timestep(self,x, cprev=0, hprev=0, verbose=False):
+        ft = self.calculate_forgot(Uf, x, Wf, hprev, bf)
+        it = self.calculate_input(Ui, x, Wi, hprev, bi)
+        candidate = self.calculate_candidate(Uc, x, Wc, hprev, bc)
+        ct = self.calculate_cell(ft, cprev, it, candidate)
+        ot = self.calculate_output(Uo, x, Wo, hprev, bo)
         ht = self.calculate_hidden(ot,ct)
 
         if(verbose):
@@ -48,8 +61,8 @@ class Cell:
             print("ot: ",ot)
             print("Timestep ct {} dan ht {}".format(ct,ht))
         
-        self.cprev = ct
-        self.hprev = ht
+        # self.cprev = ct
+        # self.hprev = ht
         return ct,ht
 
     #Gate sigmoid
@@ -102,3 +115,4 @@ testCell = Cell(False,[Uf,Ui,Uc,Uo],[Wf,bf],[Wi,bi],[Wc,bc],[Wo,bo])
 for x in X:
     hasil = testCell.calculate_timestep(x,verbose=True)
     print(hasil)
+testCell.printNeuron()

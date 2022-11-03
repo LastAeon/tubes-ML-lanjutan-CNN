@@ -1,12 +1,14 @@
 import numpy as np
 from Layer import Layer
+from layer_LSTM import Layer_LSTM
+from rnn_gate import Cell
 from Activation import Activation
 from Neuron import Neuron
 
 
 activation = {"sigmoid": Activation.sigmoid, "linear": Activation.linear,"RELU": Activation.RELU,"softmax": Activation.softmax }
 
-class FFNN:
+class LSTM:
     layer_list = []
     learning_rate = 0
     cumulative_error = 99999999999999
@@ -23,6 +25,15 @@ class FFNN:
                 layer_info = lines.pop(0).split(" ")
                 if(layer_info[0] == 'LSTM'):
                     # layer lstm belom ada
+                    layer = Layer_LSTM()
+                    for j in range(int(layer_info[-1])):
+                        U = [list(map(float, lines.pop(0).split(" "))), list(map(float, lines.pop(0).split(" "))), list(map(float, lines.pop(0).split(" "))), list(map(float, lines.pop(0).split(" ")))]
+                        f = list(map(float, lines.pop(0).split(" ")))
+                        i = list(map(float, lines.pop(0).split(" ")))
+                        c = list(map(float, lines.pop(0).split(" ")))
+                        o = list(map(float, lines.pop(0).split(" ")))
+                        cell = Cell(False, U, f, i, c, o)
+                        layer.addNeuron(cell)
                     pass
                 else:
                     layer = Layer(activation[layer_info[0]])
