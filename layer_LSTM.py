@@ -23,8 +23,10 @@ class Layer_LSTM:
         layerInput.insert(0, self.bias)
         ct = 0
         ht = 0
+        i = 0
         for n in self.neurons:
-            ct, ht = n.hitungValue(layerInput, ct, ht)
+            ct, ht = n.hitungValue(layerInput[i], ct, ht)
+            i += 1
         #     n.hitungValue(layerInput)
         #     if (self.aktivasi == Activation.linear):
         #         self.output.append(linear(n.getNetValue()))

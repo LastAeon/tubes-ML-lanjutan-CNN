@@ -55,6 +55,7 @@ class LSTM:
         # print("output ", output)
         return output
 
+
     def predictBatch(self, input_array):
         output_array = [] 
         for j in range(len(input_array)):

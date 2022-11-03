@@ -213,12 +213,12 @@ class CNN:
         print()
 
 
-# testing CNN
-image_src = "test\cats\cat.0.jpg"
-img_folder = 'test'
-cnn_test = CNN("CNN_LSTM_architecture.txt")
-cnn_test.dense.ffnn.printModel()
+# # testing CNN
+# image_src = "test\cats\cat.0.jpg"
+# img_folder = 'test'
+# cnn_test = CNN("CNN_LSTM_architecture.txt")
+# cnn_test.dense.ffnn.printModel()
 
-input_matrix, expected_output = read_image_from_source(img_folder,cnn_test.input_x,cnn_test.input_y)
+# input_matrix, expected_output = read_image_from_source(img_folder,cnn_test.input_x,cnn_test.input_y)
 
-print(cnn_test.forwardPropagation(input_matrix[0]))
+# print(cnn_test.forwardPropagation(input_matrix[0]))

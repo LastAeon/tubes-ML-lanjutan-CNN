@@ -3,6 +3,7 @@ from util import flatten, read_image_from_source, image_to_matrix
 from kfold import crossValSplit, val_train_split
 from dense import Dense
 from CNN import CNN
+from LSTM import LSTM
 import numpy as np
 from sklearn import preprocessing
 
@@ -32,6 +33,15 @@ from sklearn import preprocessing
 #     print(kernel_matrixes_tot[i])
 #     print()
 
+# testing LSTM
+X = [
+    [1, 2],
+    [.5, 3]
+]
+
+rnn_test = LSTM("LSTM_Architecture.txt")
+rnn_test.predict(X)
+
 # testing CNN
 image_src = "test\cats\cat.0.jpg"
 img_folder = 'test'
@@ -52,6 +62,8 @@ expected_output = le.fit_transform(expected_output).tolist()
 # print("input_matrix:", np.shape(input_matrix))
 # print("expected_output:", np.shape(expected_output))
 cnn_test.backpropagation([input_matrix, expected_output], 10, 0.1, 0.1)
+
+
 
 # print(cnn_test.forwardPropagation(input_matrix[0]))
 
