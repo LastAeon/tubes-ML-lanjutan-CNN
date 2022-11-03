@@ -45,11 +45,11 @@ class Cell:
             print("Not Implemented")
     
     def calculate_timestep(self,x, cprev=0, hprev=0, verbose=False):
-        ft = self.calculate_forgot(Uf, x, Wf, hprev, bf)
-        it = self.calculate_input(Ui, x, Wi, hprev, bi)
-        candidate = self.calculate_candidate(Uc, x, Wc, hprev, bc)
+        ft = self.calculate_forgot(self.Uf, x, self.Wf, hprev, self.bf)
+        it = self.calculate_input(self.Ui, x, self.Wi, hprev, self.bi)
+        candidate = self.calculate_candidate(self.Uc, x, self.Wc, hprev, self.bc)
         ct = self.calculate_cell(ft, cprev, it, candidate)
-        ot = self.calculate_output(Uo, x, Wo, hprev, bo)
+        ot = self.calculate_output(self.Uo, x, self.Wo, hprev, self.bo)
         ht = self.calculate_hidden(ot,ct)
 
         if(verbose):
@@ -93,26 +93,26 @@ class Cell:
         return ot * np.tanh(ct)
 
 #TEST class
-X = [
-    [1, 2],
-    [.5, 3]
-]
+# X = [
+#     [1, 2],
+#     [.5, 3]
+# ]
 
-hprev = 0
-Cprev = 0
+# hprev = 0
+# Cprev = 0
 
-Uf = [.7, .45]
-Ui = [.95, .8]
-Uc = [.45, .25]
-Uo = [.6, .4]
+# Uf = [.7, .45]
+# Ui = [.95, .8]
+# Uc = [.45, .25]
+# Uo = [.6, .4]
 
-Wf, bf = .1, .15
-Wi, bi = .8, .65
-Wc, bc = .15, .2
-Wo, bo = .25, .1
+# Wf, bf = .1, .15
+# Wi, bi = .8, .65
+# Wc, bc = .15, .2
+# Wo, bo = .25, .1
 
-testCell = Cell(False,[Uf,Ui,Uc,Uo],[Wf,bf],[Wi,bi],[Wc,bc],[Wo,bo])
-for x in X:
-    hasil = testCell.calculate_timestep(x,verbose=True)
-    print(hasil)
-testCell.printNeuron()
+# testCell = Cell(False,[Uf,Ui,Uc,Uo],[Wf,bf],[Wi,bi],[Wc,bc],[Wo,bo])
+# for x in X:
+#     hasil = testCell.calculate_timestep(x,verbose=True)
+#     print(hasil)
+# testCell.printNeuron()
