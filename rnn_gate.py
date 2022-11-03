@@ -15,7 +15,7 @@ class Cell:
 
     def printNeuron(self):
         print(self.U, self.f, self.i, self.c, self.o)
-    def __init__(self, rand_initialize, U, f, i, c, o):
+    def __init__(self, rand_initialize, U, f, i, c, o, timesteps=0):
         #Not implemented input size
 
         if(rand_initialize == False):

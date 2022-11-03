@@ -26,15 +26,21 @@ class LSTM:
                 if(layer_info[0] == 'LSTM'):
                     # layer lstm belom ada
                     layer = Layer_LSTM()
-                    for j in range(int(layer_info[-1])):
-                        U = [list(map(float, lines.pop(0).split(" "))), list(map(float, lines.pop(0).split(" "))), list(map(float, lines.pop(0).split(" "))), list(map(float, lines.pop(0).split(" ")))]
-                        f = list(map(float, lines.pop(0).split(" ")))
-                        i = list(map(float, lines.pop(0).split(" ")))
-                        c = list(map(float, lines.pop(0).split(" ")))
-                        o = list(map(float, lines.pop(0).split(" ")))
-                        cell = Cell(False, U, f, i, c, o)
-                        layer.addNeuron(cell)
-                    pass
+                    if(layer_info[2] == 'false'):
+                        for j in range(int(layer_info[1])):
+                            U = [list(map(float, lines.pop(0).split(" "))), list(map(float, lines.pop(0).split(" "))), list(map(float, lines.pop(0).split(" "))), list(map(float, lines.pop(0).split(" ")))]
+                            f = list(map(float, lines.pop(0).split(" ")))
+                            i = list(map(float, lines.pop(0).split(" ")))
+                            c = list(map(float, lines.pop(0).split(" ")))
+                            o = list(map(float, lines.pop(0).split(" ")))
+                            cell = Cell(False, U, f, i, c, o)
+                            layer.addNeuron(cell)
+                    elif(layer_info[2] == 'true'):
+                        for j in range(int(layer_info[1])):
+                            cell = Cell(True, 0, 0, 0, 0, 0, int(layer_info[3]))
+                            layer.addNeuron(cell)
+                    else:
+                        raise Exception("An****, true false bambang")
                 else:
                     layer = Layer(activation[layer_info[0]])
                     for j in range(int(layer_info[-1])):
