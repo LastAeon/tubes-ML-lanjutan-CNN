@@ -12,7 +12,7 @@ line 2: path to testing dataset
 line 3: CNN architecture file
 line 4: format for CNN training (<epoch> <learning rate> <momentum>)
 '''
-def read_testing_arch(acrh_path: str, with_testing = False) -> tuple[float, CNN, LabelEncoder, tuple[list, list]] :
+def read_testing_arch(acrh_path: str, with_testing = False):
     cnn = None
     le = None
     input_matrix, expected_output = None, None

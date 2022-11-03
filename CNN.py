@@ -112,7 +112,7 @@ class CNN:
             if layer.type == 'convolution layer':
                 layer.init_backpropagation(self.learning_rate, self.momentum)
 
-    def backpropagation(self, dataset, epoch, learning_rate, momentum, with_validation = False, val_dataset: tuple[list, list] = None):
+    def backpropagation(self, dataset, epoch, learning_rate, momentum, with_validation = False, val_dataset = None):
         self.learning_rate = learning_rate
         self.momentum = momentum
         self.is_backward = True
@@ -185,7 +185,7 @@ class CNN:
             cnn.__dict__ = pickle.load(f)
             return cnn
 
-    def train_90_10(self, dataset, epoch, learning_rate, momentum, with_validation = False, val_dataset: tuple[list, list] = None):
+    def train_90_10(self, dataset, epoch, learning_rate, momentum, with_validation = False, val_dataset = None):
         train_dataset, test_dataset = val_train_split(dataset, 10)
         # print("TRAIN", len(train_dataset[0]))
         self.backpropagation(dataset, epoch, learning_rate, momentum, with_validation, val_dataset)
