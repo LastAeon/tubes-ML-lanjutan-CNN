@@ -87,19 +87,19 @@ class Cell:
         return ct,ht
 
     #Gate sigmoid
-    def calculate_gate(self,u: list[float], x: list[float], w: float, h: float, b:float):
+    def calculate_gate(self,u, x, w: float, h: float, b:float):
         return sigmoid(np.dot(u, x) + w * h + b)
 
     #Forgot gate
-    def calculate_forgot(self,uf: list[float], x: list[float], wf: float, hprev: float, bf:float):
+    def calculate_forgot(self,uf, x, wf: float, hprev: float, bf:float):
         return self.calculate_gate(uf, x, wf, hprev, bf)
 
     #Input gate
-    def calculate_input(self,ui: list[float], x: list[float], wi: float, hprev: float, bi:float):
+    def calculate_input(self,ui, x, wi: float, hprev: float, bi:float):
         return self.calculate_gate(ui, x, wi, hprev, bi)
 
     #Calculate candidate
-    def calculate_candidate(self,uc: list[float], x: list[float], wc: float, hprev: float, bc:float):
+    def calculate_candidate(self,uc, x, wc: float, hprev: float, bc:float):
         return np.tanh(np.dot(uc, x) + wc * hprev + bc)
 
     #Cell state
@@ -107,7 +107,7 @@ class Cell:
         return ft*cprev + it*candidate
 
     #Output gate
-    def calculate_output(self,uo: list[float], x: list[float], wo: float, hprev: float, bo:float):
+    def calculate_output(self,uo, x, wo: float, hprev: float, bo:float):
         return self.calculate_gate(uo,x,wo,hprev,bo)
 
     def calculate_hidden(self,ot:float, ct:float):
