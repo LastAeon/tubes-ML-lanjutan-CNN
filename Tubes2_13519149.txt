@@ -1,0 +1,11 @@
+Tugas Besar 2
+IF4074 Advanced Machine Learning
+LSTM - Long Short-term Memory
+
+Syihabuddin Yahya Muhammad  / 13519149
+Imam Nurul Hukmi            / 13519150
+Muhammad Furqon             / 13519184
+
+link repo: https://github.com/LastAeon/tubes-ML-lanjutan-CNN
+link google collab: https://colab.research.google.com/drive/1XAzagyKsNBDMXaAB-CteGz1qQgPROlvV?usp=sharing
+link video: https://youtu.be/ejI_NeEq1GM
